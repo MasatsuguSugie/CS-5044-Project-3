@@ -1,0 +1,109 @@
+package edu.vt.cs5044;
+
+import static org.junit.Assert.*;
+import edu.vt.cs5044.tetris.AI;
+import edu.vt.cs5044.tetris.Board;
+import edu.vt.cs5044.tetris.Placement;
+import edu.vt.cs5044.tetris.Rotation;
+import edu.vt.cs5044.tetris.Shape;
+import org.junit.Before;
+import org.junit.Test;
+
+@SuppressWarnings("javadoc")
+public class TetrisAITest
+{
+    private AI    brain;
+    private Board emptyBoard;
+    private Board simpleBoard;
+    private Board apiSampleBoard;
+    private Board johnnysBoard;
+    private Board lShapeBoard;
+    private Board oShapeBoard;
+
+
+    @Before
+    public void setUp()
+    {
+        brain = new TetrisAI();
+        emptyBoard = new Board();
+        simpleBoard = new Board("   #      ");
+
+        apiSampleBoard = new Board(
+            "## ##    #",
+            "# ##### ##",
+            "#### #####",
+            "# ##### ##",
+            "## #######",
+            "######### ",
+            " #########",
+            " #########",
+            "###  #####",
+            "####### ##",
+            "######## #",
+            " #### ####");
+
+        johnnysBoard = new Board(
+            "  ###  ## ",
+            "###  #  ##",
+            "##### ### ",
+            "##  ### ##",
+            " ##### ###",
+            "######### ",
+            "   #######");
+
+        lShapeBoard = new Board("######### ", "######### ", "######### ", "######### ");
+
+        oShapeBoard = new Board("  ########", "  ########");
+
+    }
+    // TODO: Field declarations (if any) go here
+
+
+    @Test
+    public void testFindBestPlacement()
+    {
+        assertEquals(
+            new Placement(Rotation.NONE, 9),
+            brain.findBestPlacement(lShapeBoard, Shape.I));
+        assertEquals(
+            new Placement(Rotation.NONE, 0),
+            brain.findBestPlacement(oShapeBoard, Shape.O));
+    }
+
+
+    @Test
+    public void testGetAverageColumnBlocks()
+    {
+        assertEquals(0, brain.getAverageColumnBlocks(emptyBoard));
+        assertEquals(0, brain.getAverageColumnBlocks(simpleBoard));
+        assertEquals(10, brain.getAverageColumnBlocks(apiSampleBoard));
+    }
+
+
+    @Test
+    public void testGetColumnHeightRange()
+    {
+        assertEquals(0, brain.getColumnHeightRange(emptyBoard));
+        assertEquals(1, brain.getColumnHeightRange(simpleBoard));
+        assertEquals(2, brain.getColumnHeightRange(apiSampleBoard));
+    }
+
+
+    @Test
+    public void testGetColumnHeightVariability()
+    {
+        assertEquals(0, brain.getColumnHeightVariability(emptyBoard));
+        assertEquals(2, brain.getColumnHeightVariability(simpleBoard));
+        assertEquals(6, brain.getColumnHeightVariability(apiSampleBoard));
+    }
+
+
+    @Test
+    public void testGetTotalGapCount()
+    {
+        assertEquals(0, brain.getTotalGapCount(emptyBoard));
+        assertEquals(0, brain.getTotalGapCount(simpleBoard));
+        assertEquals(14, brain.getTotalGapCount(apiSampleBoard));
+    }
+
+}
