@@ -1,0 +1,162 @@
+package edu.vt.cs5044;
+
+import edu.vt.cs5044.tetris.AI;
+import edu.vt.cs5044.tetris.Board;
+import edu.vt.cs5044.tetris.Placement;
+import edu.vt.cs5044.tetris.Shape;
+import edu.vt.cs5044.tetris.Rotation;
+
+/**
+ * Write a one-sentence summary of your class here. Follow it with additional details about its
+ * purpose, what abstraction it represents, and how to use it.
+ * 
+ * @author sugie
+ * @version 27 Sep 2018
+ */
+public class TetrisAI
+    implements AI
+{
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Placement findBestPlacement(Board arg0, Shape arg1)
+    {
+        int bestCost = 0;
+        Placement bestPlacement = null;
+        int overallCost = 1 * getTotalGapCount(arg0) + 1 * getAverageColumnBlocks(arg0)
+            + 1 * getColumnHeightRange(arg0) + 1 * getColumnHeightVariability(arg0);
+        for (Rotation rotation : arg1.getRotationSet())
+        {
+            for (int col = 0; col < arg1.getWidth(rotation); col++)
+            {
+                Placement thisPlacement = findBestPlacement(arg0, arg1);
+                int thisCost = overallCost;
+                if (thisCost < bestCost)
+                {
+                    bestCost = thisCost;
+                    bestPlacement = thisPlacement;
+
+                }
+            }
+        }
+
+        return bestPlacement;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getAverageColumnBlocks(Board board)
+    {
+        int sum = 0;
+
+        for (int col = 0; col < Board.WIDTH; col++)
+        {
+            sum = sum + getColumnBlockCount(board, col);
+        }
+
+        return sum / Board.WIDTH;
+
+    }
+
+
+    private int getColumnBlockCount(Board board, int col)
+    {
+        int count = 0;
+
+        for (int row = 0; row < Board.HEIGHT; row++)
+        {
+            if (board.isBlockAt(col, row))
+            {
+                count = count + 1;
+            }
+        }
+
+        return count;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getColumnHeightRange(Board board)
+    {
+        int high = Integer.MIN_VALUE;
+        int low = Integer.MAX_VALUE;
+
+        for (int col = 0; col < Board.WIDTH; col++)
+        {
+            int colHeight = getColumnHeight(board, col);
+            if (colHeight > high)
+            {
+                high = colHeight;
+            }
+            if (colHeight < low)
+            {
+                low = colHeight;
+            }
+        }
+        return high - low;
+    }
+
+
+    private int getColumnHeight(Board board, int col)
+    {
+        int height = 0;
+
+        for (int row = 0; row < Board.HEIGHT; row++)
+        {
+            if (board.isBlockAt(col, row))
+            {
+                height = row + 1;
+            }
+
+        }
+
+        return height;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getColumnHeightVariability(Board board)
+    {
+        int sum = 0;
+        for (int col = 1; col < Board.WIDTH; col++)
+        {
+            int colHeight = getColumnHeight(board, col);
+            int prevColHeight = getColumnHeight(board, col - 1);
+
+            sum += Math.abs(colHeight - prevColHeight);
+
+        }
+
+        return sum;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getTotalGapCount(Board board)
+    {
+        int gaps = 0;
+        for (int col = 0; col < Board.WIDTH; col++)
+        {
+            gaps += getColumnHeight(board, col) - getColumnBlockCount(board, col);
+        }
+        return gaps;
+
+    }
+
+}
