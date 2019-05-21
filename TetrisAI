@@ -21,28 +21,31 @@ public class TetrisAI
      * {@inheritDoc}
      */
     @Override
-    public Placement findBestPlacement(Board arg0, Shape arg1)
+    public Placement findBestPlacement(Board board, Shape shape)
     {
-        int bestCost = 0;
+        int bestCost = Integer.MAX_VALUE;
         Placement bestPlacement = null;
-        int overallCost = 1 * getTotalGapCount(arg0) + 1 * getAverageColumnBlocks(arg0)
-            + 1 * getColumnHeightRange(arg0) + 1 * getColumnHeightVariability(arg0);
-        for (Rotation rotation : arg1.getRotationSet())
+        for (Rotation rotation : shape.getRotationSet())
         {
-            for (int col = 0; col < arg1.getWidth(rotation); col++)
+            for (int col = 0; col < Board.WIDTH - (shape.getWidth(rotation) - 1); col++)
             {
-                Placement thisPlacement = findBestPlacement(arg0, arg1);
+                Placement thisPlacement = new Placement(rotation, col);
+                Board resultBoard = board.getResultBoard(shape, thisPlacement);
+                int overallCost =
+                    5 * getTotalGapCount(resultBoard) + 1 * getAverageColumnBlocks(resultBoard)
+                        + 1 * getColumnHeightRange(resultBoard)
+                        + 1 * getColumnHeightVariability(resultBoard);
                 int thisCost = overallCost;
                 if (thisCost < bestCost)
                 {
                     bestCost = thisCost;
                     bestPlacement = thisPlacement;
-
                 }
+
             }
         }
 
-        return bestPlacement;
+        return bestPlacement; // return best placement
     }
 
 
