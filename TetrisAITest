@@ -16,9 +16,22 @@ public class TetrisAITest
     private Board emptyBoard;
     private Board simpleBoard;
     private Board apiSampleBoard;
-    private Board johnnysBoard;
-    private Board lShapeBoard;
+    private Board nonTrivial1Board;
+    private Board nonTrivial2Board;
+    private Board nonTrivial3Board;
+    private Board nonTrivial4Board;
+    private Board nonTrivial5Board;
+    private Board iShapeBoard;
+    private Board tShapeBoard;
     private Board oShapeBoard;
+    private Board jShapeBoard;
+    private Board lShapeBoard;
+    private Board zShapeBoard;
+    private Board sShapeBoard;
+    private Board anyShapeBoard;
+    private Board pyramidBoard;
+    private Board questionMarkBoard;
+    private Board hiBoard;
 
 
     @Before
@@ -27,36 +40,150 @@ public class TetrisAITest
         brain = new TetrisAI();
         emptyBoard = new Board();
         simpleBoard = new Board("   #      ");
-
+        
         apiSampleBoard = new Board(
-            "## ##    #",
-            "# ##### ##",
-            "#### #####",
-            "# ##### ##",
-            "## #######",
-            "######### ",
-            " #########",
-            " #########",
-            "###  #####",
-            "####### ##",
-            "######## #",
-            " #### ####");
-
-        johnnysBoard = new Board(
-            "  ###  ## ",
-            "###  #  ##",
-            "##### ### ",
-            "##  ### ##",
-            " ##### ###",
-            "######### ",
-            "   #######");
-
-        lShapeBoard = new Board("######### ", "######### ", "######### ", "######### ");
-
-        oShapeBoard = new Board("  ########", "  ########");
-
+        "## ##    #",
+        "# ##### ##",
+        "#### #####",
+        "# ##### ##",
+        "## #######",
+        "######### ",
+        " #########",
+        " #########",
+        "###  #####",
+        "####### ##",
+        "######## #",
+        " #### ####");
+        
+        nonTrivial1Board = new Board(
+        "##  ##  ##",
+        " ### #### ",
+        " ### #####",
+        " #########",
+        " ##  ###  ",
+        " #### ####",
+        "######### ",
+        "##  ## ###",
+        "##  ##  ##",
+        "######  ##",
+        "####  ### ",
+        "# # # # # ");
+        
+        nonTrivial2Board = new Board(
+        "######### ",
+        " #########",
+        "# ########",
+        "## #######",
+        "### ######",
+        "#### #####",
+        "##### ####",
+        "###### ###",
+        "####### ##",
+        "######## #",
+        "######### ",
+        " #########");
+        
+        nonTrivial3Board = new Board(
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        " #########",
+        "######### ");
+        
+        nonTrivial4Board = new Board(
+        "##  ##  ##",
+        "######  ##",
+        "##  ######",
+        "######  ##",
+        "##  ######",
+        "######  ##",
+        "##  ######",
+        "######  ##",
+        "##  ######",
+        "######  ##",
+        "##  ######",
+        "##  ##  ##");
+        
+        nonTrivial5Board = new Board(
+        "#         ",
+        "##        ",
+        "###       ",
+        "####      ",
+        "#####     ",
+        "######    ",
+        "#######   ",
+        "########  ",
+        "######### ",
+        "##  ##  ##",
+        "##  ##  ##",
+        "##  ##  ##");
+            
+        iShapeBoard = new Board(
+        "######### ",
+        "######### ",
+        "######### ",
+        "######### ");
+        
+        tShapeBoard = new Board(
+        "#   ######",
+        "## #######");
+        
+        oShapeBoard = new Board(
+        "######  ##",
+        "######  ##");
+        
+        lShapeBoard = new Board(
+        "##   #####",
+        "## #######");
+        
+        jShapeBoard = new Board(
+        "#####   ##",
+        "####### ##");
+        
+        zShapeBoard = new Board(
+        "##   #####",
+        "###  #####");
+        
+        sShapeBoard = new Board(
+        "#####   ##",
+        "#####  ###");
+        
+        anyShapeBoard = new Board(
+        "#    #   #",
+        "#   ##   #",
+        "## ### ###");
+        
+        pyramidBoard = new Board(
+        "     #    ",
+        "    ###   ",
+        "   #####  ",
+        "  ####### ",
+        " #########");
+        
+        questionMarkBoard = new Board(
+        "    ####  ",
+        "   #    # ",
+        "  #      #",
+        "  #     # ",
+        "       #  ",
+        "      #   ",
+        "      #   ",
+        "      #   ");
+        
+        hiBoard = new Board(
+        "#    #   #",
+        "#    #    ",
+        "######   #",
+        "#    #   #",
+        "#    #   #");
     }
-    // TODO: Field declarations (if any) go here
 
 
     @Test
@@ -64,10 +191,25 @@ public class TetrisAITest
     {
         assertEquals(
             new Placement(Rotation.NONE, 9),
-            brain.findBestPlacement(lShapeBoard, Shape.I));
+            brain.findBestPlacement(iShapeBoard, Shape.I));
         assertEquals(
-            new Placement(Rotation.NONE, 0),
+            new Placement(Rotation.NONE, 6),
             brain.findBestPlacement(oShapeBoard, Shape.O));
+        assertEquals(
+            new Placement(Rotation.CCW_180, 1),
+            brain.findBestPlacement(tShapeBoard, Shape.T));
+        assertEquals(
+            new Placement(Rotation.CCW_270, 2),
+            brain.findBestPlacement(lShapeBoard, Shape.L));
+        assertEquals(
+            new Placement(Rotation.CCW_90, 5),
+            brain.findBestPlacement(jShapeBoard, Shape.J));
+        assertEquals(
+            new Placement(Rotation.NONE, 2),
+            brain.findBestPlacement(zShapeBoard, Shape.Z));
+        assertEquals(
+            new Placement(Rotation.NONE, 5),
+            brain.findBestPlacement(sShapeBoard, Shape.S));
     }
 
 
@@ -77,6 +219,22 @@ public class TetrisAITest
         assertEquals(0, brain.getAverageColumnBlocks(emptyBoard));
         assertEquals(0, brain.getAverageColumnBlocks(simpleBoard));
         assertEquals(10, brain.getAverageColumnBlocks(apiSampleBoard));
+        assertEquals(3, brain.getAverageColumnBlocks(iShapeBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(anyShapeBoard));
+        assertEquals(2, brain.getAverageColumnBlocks(pyramidBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(questionMarkBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(hiBoard));
+        assertEquals(8, brain.getAverageColumnBlocks(nonTrivial1Board));
+        assertEquals(10, brain.getAverageColumnBlocks(nonTrivial2Board));
+        assertEquals(10, brain.getAverageColumnBlocks(nonTrivial3Board));
+        assertEquals(9, brain.getAverageColumnBlocks(nonTrivial4Board));
+        assertEquals(6, brain.getAverageColumnBlocks(nonTrivial5Board));
+        assertEquals(1, brain.getAverageColumnBlocks(oShapeBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(tShapeBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(lShapeBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(jShapeBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(zShapeBoard));
+        assertEquals(1, brain.getAverageColumnBlocks(sShapeBoard));
     }
 
 
@@ -86,6 +244,22 @@ public class TetrisAITest
         assertEquals(0, brain.getColumnHeightRange(emptyBoard));
         assertEquals(1, brain.getColumnHeightRange(simpleBoard));
         assertEquals(2, brain.getColumnHeightRange(apiSampleBoard));
+        assertEquals(4, brain.getColumnHeightRange(iShapeBoard));
+        assertEquals(3, brain.getColumnHeightRange(anyShapeBoard));
+        assertEquals(5, brain.getColumnHeightRange(pyramidBoard));
+        assertEquals(8, brain.getColumnHeightRange(questionMarkBoard));
+        assertEquals(5, brain.getColumnHeightRange(hiBoard));
+        assertEquals(1, brain.getColumnHeightRange(nonTrivial1Board));
+        assertEquals(1, brain.getColumnHeightRange(nonTrivial2Board));
+        assertEquals(11, brain.getColumnHeightRange(nonTrivial3Board));
+        assertEquals(2, brain.getColumnHeightRange(nonTrivial4Board));
+        assertEquals(9, brain.getColumnHeightRange(nonTrivial5Board));
+        assertEquals(2, brain.getColumnHeightRange(oShapeBoard));
+        assertEquals(2, brain.getColumnHeightRange(tShapeBoard));
+        assertEquals(2, brain.getColumnHeightRange(lShapeBoard));
+        assertEquals(2, brain.getColumnHeightRange(jShapeBoard));
+        assertEquals(2, brain.getColumnHeightRange(zShapeBoard));
+        assertEquals(2, brain.getColumnHeightRange(sShapeBoard));
     }
 
 
@@ -95,6 +269,22 @@ public class TetrisAITest
         assertEquals(0, brain.getColumnHeightVariability(emptyBoard));
         assertEquals(2, brain.getColumnHeightVariability(simpleBoard));
         assertEquals(6, brain.getColumnHeightVariability(apiSampleBoard));
+        assertEquals(4, brain.getColumnHeightVariability(iShapeBoard));
+        assertEquals(12, brain.getColumnHeightVariability(anyShapeBoard));
+        assertEquals(9, brain.getColumnHeightVariability(pyramidBoard));
+        assertEquals(10, brain.getColumnHeightVariability(questionMarkBoard));
+        assertEquals(14, brain.getColumnHeightVariability(hiBoard));
+        assertEquals(4, brain.getColumnHeightVariability(nonTrivial1Board));
+        assertEquals(1, brain.getColumnHeightVariability(nonTrivial2Board));
+        assertEquals(11, brain.getColumnHeightVariability(nonTrivial3Board));
+        assertEquals(6, brain.getColumnHeightVariability(nonTrivial4Board));
+        assertEquals(9, brain.getColumnHeightVariability(nonTrivial5Board));
+        assertEquals(4, brain.getColumnHeightVariability(oShapeBoard));
+        assertEquals(4, brain.getColumnHeightVariability(tShapeBoard));
+        assertEquals(4, brain.getColumnHeightVariability(lShapeBoard));
+        assertEquals(4, brain.getColumnHeightVariability(jShapeBoard));
+        assertEquals(4, brain.getColumnHeightVariability(zShapeBoard));
+        assertEquals(4, brain.getColumnHeightVariability(sShapeBoard));
     }
 
 
@@ -104,6 +294,22 @@ public class TetrisAITest
         assertEquals(0, brain.getTotalGapCount(emptyBoard));
         assertEquals(0, brain.getTotalGapCount(simpleBoard));
         assertEquals(14, brain.getTotalGapCount(apiSampleBoard));
+        assertEquals(0, brain.getTotalGapCount(iShapeBoard));
+        assertEquals(0, brain.getTotalGapCount(anyShapeBoard));
+        assertEquals(0, brain.getTotalGapCount(pyramidBoard));
+        assertEquals(44, brain.getTotalGapCount(questionMarkBoard));
+        assertEquals(9, brain.getTotalGapCount(hiBoard));
+        assertEquals(31, brain.getTotalGapCount(nonTrivial1Board));
+        assertEquals(11, brain.getTotalGapCount(nonTrivial2Board));
+        assertEquals(1, brain.getTotalGapCount(nonTrivial3Board));
+        assertEquals(22, brain.getTotalGapCount(nonTrivial4Board));
+        assertEquals(12, brain.getTotalGapCount(nonTrivial5Board));
+        assertEquals(0, brain.getTotalGapCount(oShapeBoard));
+        assertEquals(0, brain.getTotalGapCount(tShapeBoard));
+        assertEquals(0, brain.getTotalGapCount(lShapeBoard));
+        assertEquals(0, brain.getTotalGapCount(jShapeBoard));
+        assertEquals(0, brain.getTotalGapCount(zShapeBoard));
+        assertEquals(0, brain.getTotalGapCount(sShapeBoard));
     }
 
 }
